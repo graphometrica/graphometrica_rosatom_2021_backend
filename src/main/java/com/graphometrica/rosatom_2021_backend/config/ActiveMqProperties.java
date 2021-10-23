@@ -9,4 +9,5 @@ public class ActiveMqProperties {
     private String brokerUrl = "";
     private String topic = "";
     private String queue = "";
+    private RosatomProperties rosatom;
 }
