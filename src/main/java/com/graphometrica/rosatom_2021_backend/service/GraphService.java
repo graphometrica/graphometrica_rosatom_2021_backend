@@ -83,12 +83,12 @@ public class GraphService {
                                 .map(Station::getStationId)
                                 .collect(Collectors.toList())));
                         router.setAdjacencyMatrixCsv(mapper.writeValueAsString(result.getAdj()));
-                        router.setQuboMatrixCsv(mapper.writeValueAsString(router.getQuboMatrixCsv()));
+                        router.setQuboMatrixCsv(mapper.writeValueAsString(result.getQubo()));
                     } catch (JsonProcessingException e) {
                         e.printStackTrace();
                     }
                     router.setSolverType(result.getSolverType());
-                    router.setHamEnergy(router.getHamEnergy());
+                    router.setHamEnergy(result.getHamEnergy());
                     router.setSolutionType(result.getSolutionType());
                     router.setTotalTime(result.getEnergy().intValue());
                     routeRepository.save(router);
