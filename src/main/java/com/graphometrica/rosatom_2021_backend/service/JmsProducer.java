@@ -2,6 +2,7 @@ package com.graphometrica.rosatom_2021_backend.service;
 
 import com.graphometrica.rosatom_2021_backend.config.ActiveMqProperties;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.activemq.command.ActiveMQQueue;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +20,19 @@ public class JmsProducer {
         this.activeMqProperties = activeMqProperties;
     }
 
-    public void sendMessage(String message) {
+    public void sendMessageToTopic(String message) {
         try{
             log.info("Attempting Send message to Topic: "+ activeMqProperties.getTopic());
             jmsTemplate.convertAndSend(activeMqProperties.getTopic(), message);
+        } catch(Exception e){
+            log.error("Recieved Exception during send Message: ", e);
+        }
+    }
+
+    public void sendMessageToQueue(String message) {
+        try{
+            log.info("Attempting Send message to Queue: "+ activeMqProperties.getTopic());
+            jmsTemplate.convertAndSend(new ActiveMQQueue(activeMqProperties.getQueue()), message);
         } catch(Exception e){
             log.error("Recieved Exception during send Message: ", e);
         }

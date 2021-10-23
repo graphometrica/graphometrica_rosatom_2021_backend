@@ -34,11 +34,20 @@ public class ActiveMQConfig {
         activeMQConnectionFactory.setTrustedPackages(Arrays.asList("com.graphometrica.rosatom_2021_backend"));
         return  activeMQConnectionFactory;
     }
+
     @Bean
-    public DefaultJmsListenerContainerFactory jmsListenerContainerFactory(){
+    public DefaultJmsListenerContainerFactory jmsTopicListenerContainerFactory(){
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory());
         factory.setPubSubDomain(true);
+        return factory;
+    }
+
+    @Bean
+    public DefaultJmsListenerContainerFactory jmsQueueListenerContainerFactory(){
+        DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
+        factory.setConnectionFactory(connectionFactory());
+        factory.setPubSubDomain(false);
         return factory;
     }
 }

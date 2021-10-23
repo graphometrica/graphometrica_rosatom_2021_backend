@@ -7,11 +7,10 @@ import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 
 import javax.jms.Message;
-import javax.jms.MessageListener;
 
 @Component
 @Slf4j
-public class JmsConsumer implements MessageListener {
+public class JmsConsumer {
     ActiveMqProperties activeMqProperties;
 
     JmsConsumer(
@@ -20,15 +19,25 @@ public class JmsConsumer implements MessageListener {
         this.activeMqProperties = activeMqProperties;
     }
 
-    @Override
-    @JmsListener(destination = "${active-mq.topic}")
-    public void onMessage(Message message) {
+    @JmsListener(destination = "${active-mq.topic}", containerFactory = "jmsTopicListenerContainerFactory")
+    public void onTopicMessage(Message message) {
         try {
             ActiveMQTextMessage objectMessage = (ActiveMQTextMessage) message;
             String mess = objectMessage.getText();
-            log.info("Received Message: " + mess);
+            log.info("Received Topic Message: " + mess);
         } catch (Exception e) {
-            log.error("Received Exception : " + e);
+            log.error("Received Topic Exception : " + e);
+        }
+    }
+
+    @JmsListener(destination = "${active-mq.queue}", containerFactory = "jmsQueueListenerContainerFactory")
+    public void onQueueMessage(Message message) {
+        try {
+            ActiveMQTextMessage objectMessage = (ActiveMQTextMessage) message;
+            String mess = objectMessage.getText();
+            log.info("Received Queue Message: " + mess);
+        } catch (Exception e) {
+            log.error("Received Queue Exception : " + e);
         }
     }
 }

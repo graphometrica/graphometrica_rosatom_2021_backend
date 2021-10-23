@@ -15,9 +15,15 @@ public class ProduceMessageController {
         this.jmsProducer = jmsProducer;
     }
 
-    @PostMapping(value="/api/employee")
-    public String sendMessage(@RequestBody String message){
-        jmsProducer.sendMessage(message);
+    @PostMapping(value="/api/topic")
+    public String sendMessageToTopic(@RequestBody String message){
+        jmsProducer.sendMessageToTopic(message);
+        return message;
+    }
+
+    @PostMapping(value="/api/queue")
+    public String sendMessageToQueue(@RequestBody String message){
+        jmsProducer.sendMessageToQueue(message);
         return message;
     }
 }

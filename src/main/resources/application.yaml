@@ -4,8 +4,9 @@ server:
 spring:
   datasource:
     url: jdbc:postgresql://52.149.226.198:5432/rosatomdb
-    username: username
-    password: password
+    #креды в табличке которую я запинил в телеге
+    username:
+    password:
     driver-class-name: org.postgresql.Driver
   flyway:
     schemas: rosatom
@@ -17,3 +18,4 @@ spring:
 active-mq:
   broker-url: tcp://52.149.226.198:61616
   topic: demo.topic
+  queue: demo.queue
