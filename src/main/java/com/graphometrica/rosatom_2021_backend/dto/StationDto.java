@@ -15,6 +15,7 @@ public class StationDto {
     private int id;
     private String stationId;
     private String name;
+    private String lineId;
     private Boolean inCircle;
     private Integer top;
     private Integer left;
@@ -31,6 +32,7 @@ public class StationDto {
         id = model.getId();
         stationId = model.getStationId();
         name = model.getName();
+        lineId = model.getLineId();
         inCircle = model.getInCircle();
         top = model.getTop();
         left = model.getLeft();
@@ -53,6 +55,7 @@ public class StationDto {
         station.setStationId(stationId);
         station.setId(id);
         station.setName(name);
+        station.setLineId(lineId);
         station.setInCircle(inCircle);
         station.setTop(top);
         station.setLeft(left);

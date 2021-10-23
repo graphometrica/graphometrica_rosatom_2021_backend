@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 public class Edge {
     Integer src;
     Integer dst;
-    Float weight;
+    Double weight;
 }
