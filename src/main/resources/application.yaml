@@ -5,8 +5,8 @@ spring:
   datasource:
     url: jdbc:postgresql://52.149.226.198:5432/rosatomdb
     #креды в табличке которую я запинил в телеге
-    username:
-    password:
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
   flyway:
     schemas: rosatom
