@@ -3,9 +3,6 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://52.149.226.198:5432/rosatomdb?currentSchema=rosatom
-    username: ${POSTGRES_USER:}
-    password: ${POSTGRES_PASSWORD:}
     driver-class-name: org.postgresql.Driver
   flyway:
     schemas: rosatom
@@ -18,7 +15,26 @@ active-mq:
   broker-url: tcp://52.149.226.198:61616
   topic: demo.topic
   queue: demo.queue
+
+---
+spring:
+  profiles: dev
+  datasource:
+    url: jdbc:postgresql://localhost:5432/rosatomdb?currentSchema=rosatom
+    username: ${POSTGRES_USER:rosatom}
+    password: ${POSTGRES_PASSWORD:rosatom}
+active-mq:
+  rosatom:
+    tsp-input-queue: rosatom.tsp.input.test
+    tsp-output-queue: rosatom.tsp.output.test
+---
+spring:
+  profiles: prod
+  datasource:
+    url: jdbc:postgresql://52.149.226.198:5432/rosatomdb?currentSchema=rosatom
+    username: ${POSTGRES_USER:username}
+    password: ${POSTGRES_PASSWORD:password}
+active-mq:
   rosatom:
     tsp-input-queue: rosatom.tsp.input
     tsp-output-queue: rosatom.tsp.output
-

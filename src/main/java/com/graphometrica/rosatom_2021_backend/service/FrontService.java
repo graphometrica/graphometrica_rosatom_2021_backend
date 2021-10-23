@@ -1,10 +1,7 @@
 package com.graphometrica.rosatom_2021_backend.service;
 
 import com.graphometrica.rosatom_2021_backend.dto.RouteDto;
-import com.graphometrica.rosatom_2021_backend.model.Line;
-import com.graphometrica.rosatom_2021_backend.model.MetroConnection;
-import com.graphometrica.rosatom_2021_backend.model.Route;
-import com.graphometrica.rosatom_2021_backend.model.Station;
+import com.graphometrica.rosatom_2021_backend.model.*;
 import com.graphometrica.rosatom_2021_backend.repository.ConnectionRepository;
 import com.graphometrica.rosatom_2021_backend.repository.LineRepository;
 import com.graphometrica.rosatom_2021_backend.repository.RouteRepository;
@@ -55,6 +52,14 @@ public class FrontService {
                 .map(RouteDto::getStations)
                 .map(graphService::generatePairs)
                 .orElse(List.of());
-        tspJmsService.sendMessageTspSolver(edges, String.valueOf(routeId));
+
+        TspInput input = new TspInput(
+                edges,
+                //TODO add solver_type
+                "solver_type",
+                String.valueOf(routeId)
+        );
+
+        tspJmsService.sendMessageTspSolver(input);
     }
 }

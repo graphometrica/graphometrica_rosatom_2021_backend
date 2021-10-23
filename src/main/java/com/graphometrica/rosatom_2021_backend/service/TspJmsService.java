@@ -3,6 +3,7 @@ package com.graphometrica.rosatom_2021_backend.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.graphometrica.rosatom_2021_backend.config.ActiveMqProperties;
 import com.graphometrica.rosatom_2021_backend.model.Edge;
+import com.graphometrica.rosatom_2021_backend.model.TspInput;
 import com.graphometrica.rosatom_2021_backend.model.TspResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,15 +25,14 @@ public class TspJmsService implements TspJmsServiceInterface {
     private final ObjectMapper mapper = new ObjectMapper();
     private final GraphService graphService;
 
-    public void sendMessageTspSolver(List<Edge> edges, String routerId) {
+    public void sendMessageTspSolver(TspInput input) {
         String queue = activeMqProperties.getRosatom().getTspInputQueue();
 
         try{
-            String message = mapper.writeValueAsString(edges);
+            String message = mapper.writeValueAsString(input);
             log.info("Attempting Send message to Queue: "+ queue);
-            log.info("message : " + mapper.writeValueAsString(edges));
+            log.info("message : " + message);
             jmsTemplate.convertAndSend(new ActiveMQQueue(queue), message, msg -> {
-                msg.setStringProperty("routerId", routerId);
                 return msg;
             });
         } catch(Exception e){
