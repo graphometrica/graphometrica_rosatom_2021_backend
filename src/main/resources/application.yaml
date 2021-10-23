@@ -3,9 +3,9 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://52.149.226.198:5432/rosatomdb
-    username: ${POSTGRES_USER:username}
-    password: ${POSTGRES_PASSWORD:password}
+    url: jdbc:postgresql://52.149.226.198:5432/rosatomdb?currentSchema=rosatom
+    username: ${POSTGRES_USER:}
+    password: ${POSTGRES_PASSWORD:}
     driver-class-name: org.postgresql.Driver
   flyway:
     schemas: rosatom
