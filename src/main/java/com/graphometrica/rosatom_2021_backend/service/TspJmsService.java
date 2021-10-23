@@ -32,7 +32,7 @@ public class TspJmsService implements TspJmsServiceInterface {
             String message = mapper.writeValueAsString(input);
             log.info("Attempting Send message to Queue: "+ queue);
             log.info("message : " + message);
-            jmsTemplate.convertAndSend(new ActiveMQQueue(queue));
+            jmsTemplate.convertAndSend(new ActiveMQQueue(queue), message);
         } catch(Exception e){
             log.error("Recieved Exception during send Message: ", e);
         }
