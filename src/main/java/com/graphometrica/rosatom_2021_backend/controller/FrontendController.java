@@ -22,8 +22,8 @@ public class FrontendController {
     }
 
     @GetMapping("/getStations")
-    public List<Station> getStations() {
-        return List.of();
+    public Iterable<Station> getStations() {
+        return frontService.getAllStations();
     }
 
     @GetMapping("/getRoutes")
