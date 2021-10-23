@@ -1,0 +1,19 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:postgresql://52.149.226.198:5432/rosatomdb
+    username: username
+    password: password
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    schemas: rosatom
+    create-schemas: true
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+    url: ${spring.datasource.url}
+    enabled: true
+active-mq:
+  broker-url: tcp://52.149.226.198:61616
+  topic: demo.topic
