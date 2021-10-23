@@ -5,16 +5,12 @@ import com.graphometrica.rosatom_2021_backend.config.ActiveMqProperties;
 import com.graphometrica.rosatom_2021_backend.model.Edge;
 import com.graphometrica.rosatom_2021_backend.model.TspResult;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.activemq.command.ActiveMQMessage;
-import org.apache.activemq.command.ActiveMQObjectMessage;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.apache.activemq.command.ActiveMQTextMessage;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
-import javax.jms.Message;
 import java.util.List;
 
 @Slf4j
@@ -29,13 +25,6 @@ public class TspJmsService implements TspJmsServiceInterface {
                   JmsTemplate jmsTemplate) {
         this.activeMqProperties = activeMqProperties;
         this.jmsTemplate = jmsTemplate;
-    }
-
-    @PostConstruct
-    void send() {
-        Edge edge = new Edge(1,2, 3F);
-
-        sendMessageTspSolver(List.of(edge, edge));
     }
 
     public void sendMessageTspSolver(List<Edge> edges) {
