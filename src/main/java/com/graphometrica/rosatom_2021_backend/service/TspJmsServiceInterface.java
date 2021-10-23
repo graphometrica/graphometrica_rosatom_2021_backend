@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface TspJmsServiceInterface {
 
-    void sendMessageTspSolver(List<Edge> edges);
-    TspResult onTspResult(ActiveMQTextMessage message);
+    void sendMessageTspSolver(List<Edge> edges, String routerId);
+    void onTspResult(ActiveMQTextMessage message);
 }

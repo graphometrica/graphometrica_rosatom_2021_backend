@@ -46,7 +46,9 @@ public class RouteDto {
             payload = mapper.readTree(model.getPayload());
         }
         result = new HashMap<>();
-        result.put("route", mapper.readValue(model.getRoute(), new TypeReference<>() {}));
+        if(model.getRoute() != null) {
+            result.put("route", mapper.readValue(model.getRoute(), new TypeReference<>() {}));
+        }
         result.put("totalTime", model.getTotalTime());
         result.put("routeCsv", model.getRouteCsv());
         result.put("quboMatrixCsv", model.getQuboMatrixCsv());
@@ -66,15 +68,16 @@ public class RouteDto {
         route.setStations(mapper.writeValueAsString(stations));
         route.setStatus(status);
         route.setPayload(mapper.writeValueAsString(payload));
-        route.setRoute(mapper.writeValueAsString(result.get("route")));
-        route.setTotalTime(Integer.parseInt(String.valueOf(result.getOrDefault("totalTime", "0"))));
-        route.setRouteCsv(String.valueOf(result.getOrDefault("routeCsv", "")));
-        route.setQuboMatrixCsv(String.valueOf(result.getOrDefault("quboMatrixCsv", "")));
-        route.setAdjacencyMatrixCsv(String.valueOf(result.getOrDefault("adjacencyMatrixCsv", "")));
-        route.setSolutionType(String.valueOf(result.getOrDefault("solutionType", "")));
-        route.setHamEnergy(Double.parseDouble(String.valueOf(result.getOrDefault("hamEnergy", "0"))));
-        route.setSolverType(String.valueOf(result.getOrDefault("solverType", "")));
-
+        if(result != null) {
+            route.setRoute(mapper.writeValueAsString(result.get("route")));
+            route.setTotalTime(Integer.parseInt(String.valueOf(result.getOrDefault("totalTime", "0"))));
+            route.setRouteCsv(String.valueOf(result.getOrDefault("routeCsv", "")));
+            route.setQuboMatrixCsv(String.valueOf(result.getOrDefault("quboMatrixCsv", "")));
+            route.setAdjacencyMatrixCsv(String.valueOf(result.getOrDefault("adjacencyMatrixCsv", "")));
+            route.setSolutionType(String.valueOf(result.getOrDefault("solutionType", "")));
+            route.setHamEnergy(Double.parseDouble(String.valueOf(result.getOrDefault("hamEnergy", "0"))));
+            route.setSolverType(String.valueOf(result.getOrDefault("solverType", "")));
+        }
         return route;
 
     }

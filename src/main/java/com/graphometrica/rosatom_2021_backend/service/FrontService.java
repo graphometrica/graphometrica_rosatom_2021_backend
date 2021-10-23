@@ -55,6 +55,6 @@ public class FrontService {
                 .map(RouteDto::getStations)
                 .map(graphService::generatePairs)
                 .orElse(List.of());
-        tspJmsService.sendMessageTspSolver(edges);
+        tspJmsService.sendMessageTspSolver(edges, String.valueOf(routeId));
     }
 }

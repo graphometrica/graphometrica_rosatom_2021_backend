@@ -2,6 +2,7 @@ package com.graphometrica.rosatom_2021_backend.service;
 
 import com.graphometrica.rosatom_2021_backend.model.Edge;
 import com.graphometrica.rosatom_2021_backend.model.Station;
+import com.graphometrica.rosatom_2021_backend.model.TspResult;
 import com.graphometrica.rosatom_2021_backend.repository.ConnectionRepository;
 import com.graphometrica.rosatom_2021_backend.repository.StationRepository;
 import lombok.RequiredArgsConstructor;
@@ -57,6 +58,10 @@ public class GraphService {
     private double getShortestWeight(String stationA, String stationB) {
         var pathFinder = new DijkstraShortestPath<>(metroGraph);
         return pathFinder.getPath(stationsMap.get(stationA),stationsMap.get(stationB)).getWeight();
+    }
+
+    public void updateRouter(TspResult result, String routerId) {
+
     }
 
 }
