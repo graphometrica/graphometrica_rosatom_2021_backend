@@ -1,14 +1,19 @@
 package com.graphometrica.rosatom_2021_backend.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.graphometrica.rosatom_2021_backend.model.Line;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 
+import java.util.Optional;
+
 @Data
 @NoArgsConstructor
+@JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.NON_NULL)
 public class LineDto {
 
     private String id;
@@ -19,18 +24,20 @@ public class LineDto {
     private Object payload;
 
     @SneakyThrows
-    public LineDto(Line lineModel) {
-        id = lineModel.getId();
-        name = lineModel.getName();
-        isCircle = lineModel.getIsCircle();
-        isMCC = lineModel.getIsMCC();
-        color = lineModel.getColor();
+    public LineDto(Line model) {
+        id = model.getId();
+        name = model.getName();
+        isCircle = model.getIsCircle();
+        isMCC = model.getIsMCC();
+        color = model.getColor();
         ObjectMapper mapper = new ObjectMapper();
-        payload = mapper.readTree(lineModel.getPayload());
+        if(model.getPayload() != null) {
+            payload = mapper.readTree(model.getPayload());
+        }
     }
 
     @SneakyThrows
-    public Line getModel() {
+    public Line toModel() {
         var line = new Line();
         line.setId(id);
         line.setName(name);

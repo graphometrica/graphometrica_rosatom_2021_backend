@@ -1,5 +1,6 @@
 package com.graphometrica.rosatom_2021_backend.service;
 
+import com.graphometrica.rosatom_2021_backend.dto.RouteDto;
 import com.graphometrica.rosatom_2021_backend.model.MetroConnection;
 import com.graphometrica.rosatom_2021_backend.model.Line;
 import com.graphometrica.rosatom_2021_backend.model.Route;
@@ -10,6 +11,8 @@ import com.graphometrica.rosatom_2021_backend.repository.RouteRepository;
 import com.graphometrica.rosatom_2021_backend.repository.StationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -37,4 +40,12 @@ public class FrontService {
         return routeRepository.findAll();
     }
 
+    public Route createRoute(Route route) {
+        return routeRepository.save(route);
+    }
+
+    public void sendToCalculate(int route) {
+        //Find all shortest ways between stations
+        //send to MQ
+    }
 }

@@ -1,6 +1,6 @@
 create table route
 (
-    route_id varchar(36) not null
+    route_id serial
         constraint route_pk
             primary key,
     stations text,

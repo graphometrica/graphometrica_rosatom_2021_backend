@@ -1,5 +1,6 @@
 package com.graphometrica.rosatom_2021_backend.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.graphometrica.rosatom_2021_backend.model.Route;
@@ -13,9 +14,10 @@ import java.util.Map;
 
 @Data
 @NoArgsConstructor
+@JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.NON_NULL)
 public class RouteDto {
 
-    private String routeId;
+    private Integer routeId;
     private List<String> stations;
     private Integer status;
     private Object payload;
@@ -32,25 +34,30 @@ public class RouteDto {
      */
 
     @SneakyThrows
-    public RouteDto(Route routeModel) {
+    public RouteDto(Route model) {
         var mapper = new ObjectMapper();
-        routeId = routeModel.getRouteId();
-        stations = mapper.readValue(routeModel.getStations(), new TypeReference<>() {});
-        status = routeModel.getStatus();
-        payload = mapper.readTree(routeModel.getPayload());
+        routeId = model.getRouteId();
+        if(model.getStations() != null) {
+            stations = mapper.readValue(model.getStations(), new TypeReference<>() {
+            });
+        }
+        status = model.getStatus();
+        if(model.getPayload() != null) {
+            payload = mapper.readTree(model.getPayload());
+        }
         result = new HashMap<>();
-        result.put("route", mapper.readValue(routeModel.getRoute(), new TypeReference<>() {}));
-        result.put("totalTime", routeModel.getTotalTime());
-        result.put("routeCsv", routeModel.getRouteCsv());
-        result.put("quboMatrixCsv", routeModel.getQuboMatrixCsv());
-        result.put("adjacencyMatrixCsv", routeModel.getAdjacencyMatrixCsv());
-        result.put("solutionType", routeModel.getSolutionType());
-        result.put("hamEnergy", routeModel.getHamEnergy());
-        result.put("solverType", routeModel.getSolverType());
+        result.put("route", mapper.readValue(model.getRoute(), new TypeReference<>() {}));
+        result.put("totalTime", model.getTotalTime());
+        result.put("routeCsv", model.getRouteCsv());
+        result.put("quboMatrixCsv", model.getQuboMatrixCsv());
+        result.put("adjacencyMatrixCsv", model.getAdjacencyMatrixCsv());
+        result.put("solutionType", model.getSolutionType());
+        result.put("hamEnergy", model.getHamEnergy());
+        result.put("solverType", model.getSolverType());
     }
 
     @SneakyThrows
-    public Route getModel() {
+    public Route toModel() {
         var route = new Route();
         route.setRouteId(routeId);
 

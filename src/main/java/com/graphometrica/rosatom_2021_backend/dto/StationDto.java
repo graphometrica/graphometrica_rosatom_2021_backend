@@ -1,5 +1,6 @@
 package com.graphometrica.rosatom_2021_backend.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.graphometrica.rosatom_2021_backend.model.Station;
 import lombok.Data;
@@ -8,6 +9,7 @@ import lombok.SneakyThrows;
 
 @Data
 @NoArgsConstructor
+@JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.NON_NULL)
 public class StationDto {
 
     private int id;
@@ -25,26 +27,28 @@ public class StationDto {
     private Object payload;
 
     @SneakyThrows
-    public StationDto(Station stationModel) {
-        id = stationModel.getId();
-        stationId = stationModel.getStationId();
-        name = stationModel.getName();
-        inCircle = stationModel.getInCircle();
-        top = stationModel.getTop();
-        left = stationModel.getLeft();
-        labelTop = stationModel.getLabelTop();
-        labelLeft = stationModel.getLabelLeft();
-        labelRight = stationModel.getLabelRight();
-        labelBottom = stationModel.getLabelBottom();
-        close = stationModel.getClose();
-        outside = stationModel.getOutside();
+    public StationDto(Station model) {
+        id = model.getId();
+        stationId = model.getStationId();
+        name = model.getName();
+        inCircle = model.getInCircle();
+        top = model.getTop();
+        left = model.getLeft();
+        labelTop = model.getLabelTop();
+        labelLeft = model.getLabelLeft();
+        labelRight = model.getLabelRight();
+        labelBottom = model.getLabelBottom();
+        close = model.getClose();
+        outside = model.getOutside();
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        payload = objectMapper.readTree(stationModel.getPayload());
+        ObjectMapper mapper = new ObjectMapper();
+        if(model.getPayload() != null) {
+            payload = mapper.readTree(model.getPayload());
+        }
     }
 
     @SneakyThrows
-    public Station getModel() {
+    public Station toModel() {
         var station = new Station();
         station.setStationId(stationId);
         station.setId(id);
