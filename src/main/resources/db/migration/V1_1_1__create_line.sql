@@ -7,7 +7,7 @@ create table line
     is_circle bool,
     "is_mcc" bool,
     color varchar(10) not null,
-    payload jsonb
+    payload text
 );
 
 INSERT INTO line (id, name, is_circle, is_mcc, color, payload) VALUES

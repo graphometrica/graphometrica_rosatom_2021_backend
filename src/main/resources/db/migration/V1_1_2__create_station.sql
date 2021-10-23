@@ -15,7 +15,7 @@ create table station
     close bool,
     outside bool,
     in_circle bool,
-    payload jsonb
+    payload text
 );
 
 INSERT INTO station (id, station_id, line_id, name, top, "left", label_top, label_left, label_right, label_bottom, close, outside, payload) VALUES

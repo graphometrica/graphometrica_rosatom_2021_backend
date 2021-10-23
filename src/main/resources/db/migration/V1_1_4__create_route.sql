@@ -3,10 +3,10 @@ create table route
     route_id varchar(36) not null
         constraint route_pk
             primary key,
-    stations jsonb,
-    payload jsonb,
+    stations text,
+    payload text,
     status int not null default 0,
-    route jsonb,
+    route text,
     total_time int,
     route_csv varchar(10000),
     qubo_matrix_csv varchar(10000),
