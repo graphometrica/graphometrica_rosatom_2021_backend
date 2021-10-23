@@ -54,7 +54,7 @@ public class FrontService {
                 .map(RouteDto::new)
                 .map(dto -> new TspInput(
                                 graphService.generatePairs(dto.getStations()),
-                                (String) dto.getResult().get("solverType"),
+                                (String) dto.getResult().getOrDefault("solverType", "remote:simcim"),
                                 String.valueOf(dto.getRouteId())
                         )
                 )
