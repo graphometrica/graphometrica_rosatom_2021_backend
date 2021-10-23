@@ -1,13 +1,20 @@
 package com.graphometrica.rosatom_2021_backend.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.graphometrica.rosatom_2021_backend.config.ActiveMqProperties;
 import com.graphometrica.rosatom_2021_backend.model.Edge;
 import com.graphometrica.rosatom_2021_backend.model.TspResult;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.activemq.command.ActiveMQMessage;
+import org.apache.activemq.command.ActiveMQObjectMessage;
 import org.apache.activemq.command.ActiveMQQueue;
+import org.apache.activemq.command.ActiveMQTextMessage;
+import org.springframework.jms.annotation.JmsListener;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+import javax.jms.Message;
 import java.util.List;
 
 @Slf4j
@@ -16,6 +23,7 @@ public class TspJmsService implements TspJmsServiceInterface {
 
     JmsTemplate jmsTemplate;
     ActiveMqProperties activeMqProperties;
+    ObjectMapper mapper = new ObjectMapper();
 
     TspJmsService(ActiveMqProperties activeMqProperties,
                   JmsTemplate jmsTemplate) {
@@ -23,20 +31,36 @@ public class TspJmsService implements TspJmsServiceInterface {
         this.jmsTemplate = jmsTemplate;
     }
 
+    @PostConstruct
+    void send() {
+        Edge edge = new Edge(1,2, 3F);
+
+        sendMessageTspSolver(List.of(edge, edge));
+    }
+
     public void sendMessageTspSolver(List<Edge> edges) {
-        String queue = activeMqProperties.getRosatom().getTspOutputQueue();
+        String queue = activeMqProperties.getRosatom().getTspInputQueue();
 
         try{
+            String message = mapper.writeValueAsString(edges);
             log.info("Attempting Send message to Queue: "+ queue);
-            log.info("message");
-            jmsTemplate.convertAndSend(new ActiveMQQueue(queue), edges);
+            log.info("message : " + mapper.writeValueAsString(edges));
+            jmsTemplate.convertAndSend(new ActiveMQQueue(queue), message);
         } catch(Exception e){
             log.error("Recieved Exception during send Message: ", e);
         }
     }
 
-    @Override
-    public TspResult onTspResult() {
-        return null;
+    @JmsListener(destination = "${active-mq.rosatom.tsp-output-queue}", containerFactory = "jmsQueueListenerContainerFactory")
+    public TspResult onTspResult(ActiveMQTextMessage message) {
+        try {
+            String resultRaw = message.getText();
+            TspResult result = mapper.readValue(resultRaw, TspResult.class);
+            log.info("Received Queue Message: " + result.getSolutionType());
+            return result;
+        } catch (Exception e) {
+            log.error("Received Queue Exception : " + e);
+            return null;
+        }
     }
 }
