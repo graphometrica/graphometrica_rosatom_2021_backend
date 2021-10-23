@@ -2,6 +2,7 @@ package com.graphometrica.rosatom_2021_backend;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.graphometrica.rosatom_2021_backend.model.TspInput;
 import com.graphometrica.rosatom_2021_backend.model.TspResult;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,7 +35,13 @@ class GraphometricaRosatom2021BackendApplicationTests {
 
         ObjectMapper mapper = new ObjectMapper();
         String strResult = mapper.writeValueAsString(tspResult);
+    }
 
+    @Test
+    void contextLoads2() throws JsonProcessingException {
+        TspInput input = new TspInput();
+        ObjectMapper mapper = new ObjectMapper();
+        String strResult = mapper.writeValueAsString(input);
     }
 
 }
