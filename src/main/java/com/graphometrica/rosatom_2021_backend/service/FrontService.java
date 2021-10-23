@@ -9,6 +9,7 @@ import com.graphometrica.rosatom_2021_backend.repository.StationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -47,18 +48,15 @@ public class FrontService {
     }
 
     public void sendToCalculate(int routeId) {
-        var edges = routeRepository.findById(routeId)
+        var input = routeRepository.findById(routeId)
                 .map(RouteDto::new)
-                .map(RouteDto::getStations)
-                .map(graphService::generatePairs)
-                .orElse(List.of());
-
-        TspInput input = new TspInput(
-                edges,
-                //TODO add solver_type
-                "solver_type",
-                String.valueOf(routeId)
-        );
+                .map(dto -> new TspInput(
+                                graphService.generatePairs(dto.getStations()),
+                                (String) dto.getResult().get("solverType"),
+                                String.valueOf(dto.getRouteId())
+                        )
+                )
+                .orElseThrow(() -> new EntityNotFoundException("Router " + routeId + " not found"));
 
         tspJmsService.sendMessageTspSolver(input);
     }

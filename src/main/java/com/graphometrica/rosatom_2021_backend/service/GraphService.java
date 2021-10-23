@@ -1,9 +1,13 @@
 package com.graphometrica.rosatom_2021_backend.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.graphometrica.rosatom_2021_backend.dto.RouteDto;
 import com.graphometrica.rosatom_2021_backend.model.Edge;
 import com.graphometrica.rosatom_2021_backend.model.Station;
 import com.graphometrica.rosatom_2021_backend.model.TspResult;
 import com.graphometrica.rosatom_2021_backend.repository.ConnectionRepository;
+import com.graphometrica.rosatom_2021_backend.repository.RouteRepository;
 import com.graphometrica.rosatom_2021_backend.repository.StationRepository;
 import lombok.RequiredArgsConstructor;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
@@ -25,7 +29,9 @@ public class GraphService {
 
     private final StationRepository stationRepository;
     private final ConnectionRepository connectionRepository;
+    private final RouteRepository routeRepository;
     private Map<String, Station> stationsMap;
+    private Map<Integer, Station> stationsIdMap;
     private SimpleWeightedGraph<Object, DefaultWeightedEdge>  metroGraph;
 
     @PostConstruct
@@ -33,6 +39,8 @@ public class GraphService {
         metroGraph = new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
         stationsMap = StreamSupport.stream(stationRepository.findAll().spliterator(), false)
                 .collect(Collectors.toMap(Station::getStationId, s -> s));
+        stationsIdMap = StreamSupport.stream(stationRepository.findAll().spliterator(), false)
+                .collect(Collectors.toMap(Station::getId, s -> s));
         stationsMap.values().forEach(metroGraph::addVertex);
         connectionRepository.findAll().forEach(conn -> {
             var time = conn.getTime();
@@ -60,8 +68,31 @@ public class GraphService {
         return pathFinder.getPath(stationsMap.get(stationA),stationsMap.get(stationB)).getWeight();
     }
 
-    public void updateRouter(TspResult result, String routerId) {
-
+    public void updateRouter(TspResult result) {
+        ObjectMapper mapper = new ObjectMapper();
+        routeRepository.findById(Integer.parseInt(result.getRouterId()))
+                .ifPresent(router -> {
+                    router.setStatus(3);
+                    router.setRouteCsv(result.getPath().stream()
+                            .map(stationsIdMap::get)
+                            .map(Station::getStationId)
+                            .collect(Collectors.joining(",")));
+                    try {
+                        router.setRoute(mapper.writeValueAsString(result.getPath().stream()
+                                .map(stationsIdMap::get)
+                                .map(Station::getStationId)
+                                .collect(Collectors.toList())));
+                        router.setAdjacencyMatrixCsv(mapper.writeValueAsString(result.getAdj()));
+                        router.setQuboMatrixCsv(mapper.writeValueAsString(router.getQuboMatrixCsv()));
+                    } catch (JsonProcessingException e) {
+                        e.printStackTrace();
+                    }
+                    router.setSolverType(result.getSolverType());
+                    router.setHamEnergy(router.getHamEnergy());
+                    router.setSolutionType(result.getSolutionType());
+                    router.setTotalTime(result.getEnergy().intValue());
+                    routeRepository.save(router);
+                });
     }
 
 }

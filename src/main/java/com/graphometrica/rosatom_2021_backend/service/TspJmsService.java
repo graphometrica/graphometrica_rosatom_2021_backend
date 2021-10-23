@@ -32,9 +32,7 @@ public class TspJmsService implements TspJmsServiceInterface {
             String message = mapper.writeValueAsString(input);
             log.info("Attempting Send message to Queue: "+ queue);
             log.info("message : " + message);
-            jmsTemplate.convertAndSend(new ActiveMQQueue(queue), message, msg -> {
-                return msg;
-            });
+            jmsTemplate.convertAndSend(new ActiveMQQueue(queue));
         } catch(Exception e){
             log.error("Recieved Exception during send Message: ", e);
         }
@@ -46,6 +44,7 @@ public class TspJmsService implements TspJmsServiceInterface {
             String resultRaw = message.getText();
             TspResult result = mapper.readValue(resultRaw, TspResult.class);
             log.info("Received Queue Message: " + result.getSolutionType());
+            graphService.updateRouter(result);
         } catch (Exception e) {
             log.error("Received Queue Exception : " + e);
         }
