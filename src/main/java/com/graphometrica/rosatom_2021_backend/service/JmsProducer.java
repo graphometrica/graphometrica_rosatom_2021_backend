@@ -31,7 +31,7 @@ public class JmsProducer {
 
     public void sendMessageToQueue(String message) {
         try{
-            log.info("Attempting Send message to Queue: "+ activeMqProperties.getTopic());
+            log.info("Attempting Send message to Queue: "+ activeMqProperties.getQueue());
             jmsTemplate.convertAndSend(new ActiveMQQueue(activeMqProperties.getQueue()), message);
         } catch(Exception e){
             log.error("Recieved Exception during send Message: ", e);
