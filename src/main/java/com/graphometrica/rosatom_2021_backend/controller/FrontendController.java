@@ -1,5 +1,6 @@
 package com.graphometrica.rosatom_2021_backend.controller;
 
+import com.graphometrica.rosatom_2021_backend.model.MetroConnection;
 import com.graphometrica.rosatom_2021_backend.model.Line;
 import com.graphometrica.rosatom_2021_backend.model.Route;
 import com.graphometrica.rosatom_2021_backend.model.Station;
@@ -24,6 +25,11 @@ public class FrontendController {
     @GetMapping("/getStations")
     public Iterable<Station> getStations() {
         return frontService.getAllStations();
+    }
+
+    @GetMapping("/getConnections")
+    public Iterable<MetroConnection> getConnections() {
+        return frontService.getAllConnections();
     }
 
     @GetMapping("/getRoutes")
