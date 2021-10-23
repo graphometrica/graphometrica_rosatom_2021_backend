@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -42,6 +43,7 @@ public class FrontService {
 
     public Route createRoute(Route route) {
         route.setStatus(1);
+        route.setCreated(new Date());
         var result =  routeRepository.save(route);
         sendToCalculate(result.getRouteId());
         return result;

@@ -8,6 +8,7 @@ import org.springframework.data.domain.Persistable;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import java.util.Date;
 
 @Data
 public class Route {
@@ -26,4 +27,6 @@ public class Route {
     private String solutionType;
     private Double hamEnergy;
     private String solverType;
+    private Date created;
+    private Date calculated;
 }

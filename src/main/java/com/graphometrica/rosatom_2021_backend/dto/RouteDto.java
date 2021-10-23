@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,8 @@ public class RouteDto {
     private List<String> stations;
     private Integer status;
     private Object payload;
+    private Long created;
+    private Long calculated;
     private Map<String, Object> result;
     /*
     private List<String> route;
@@ -37,6 +40,12 @@ public class RouteDto {
     public RouteDto(Route model) {
         var mapper = new ObjectMapper();
         routeId = model.getRouteId();
+        if (model.getCreated() != null) {
+            created = model.getCreated().getTime();
+        }
+        if (model.getCalculated() != null) {
+            calculated = model.getCalculated().getTime();
+        }
         if(model.getStations() != null) {
             stations = mapper.readValue(model.getStations(), new TypeReference<>() {
             });
@@ -68,6 +77,12 @@ public class RouteDto {
         route.setStations(mapper.writeValueAsString(stations));
         route.setStatus(status);
         route.setPayload(mapper.writeValueAsString(payload));
+        if(created != null) {
+            route.setCreated(new Date(created));
+        }
+        if(calculated != null) {
+            route.setCalculated(new Date(calculated));
+        }
         if(result != null) {
             route.setRoute(mapper.writeValueAsString(result.get("route")));
             route.setTotalTime(Integer.parseInt(String.valueOf(result.getOrDefault("totalTime", "0"))));

@@ -18,6 +18,7 @@ import org.paukov.combinatorics3.Generator;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -91,6 +92,7 @@ public class GraphService {
                     router.setHamEnergy(result.getHamEnergy());
                     router.setSolutionType(result.getSolutionType());
                     router.setTotalTime(result.getEnergy().intValue());
+                    router.setCalculated(new Date());
                     routeRepository.save(router);
                 });
     }
