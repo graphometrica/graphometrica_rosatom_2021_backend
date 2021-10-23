@@ -1,6 +1,7 @@
 package com.graphometrica.rosatom_2021_backend.model;
 
 import lombok.Data;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 
 import java.util.Map;
@@ -8,6 +9,7 @@ import java.util.Map;
 @Data
 public class Station {
 
+    @Id
     private int id;
     private String stationId;
     private String name;
@@ -20,7 +22,6 @@ public class Station {
     private Integer labelBottom;
     private Boolean close;
     private Boolean outside;
-    @Transient
-    private Map<String, Object> payload;
+    private String payload;
 
 }
