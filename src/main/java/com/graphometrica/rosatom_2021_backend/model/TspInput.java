@@ -15,7 +15,7 @@ public class TspInput {
     @JsonProperty("edge_list")
     List<Edge> edgeList;
     @JsonProperty("solver_type")
-    String solverType;
+    String solverType = "remote:simcim";
     @JsonProperty("router_id")
     String routerId;
 }

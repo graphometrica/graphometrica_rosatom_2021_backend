@@ -19,7 +19,7 @@ public class TspResult {
     @JsonProperty("router_id")
     String routerId;
     @JsonProperty("solver_type")
-    String solverType = "remote:simcim";
+    String solverType;
     @JsonProperty("solution_type")
     String solutionType;
     List<List<Double>> adj;
