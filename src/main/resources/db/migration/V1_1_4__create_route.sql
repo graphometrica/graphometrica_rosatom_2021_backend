@@ -4,6 +4,7 @@ create table route
         constraint route_pk
             primary key,
     stations jsonb,
+    payload jsonb,
     status int not null default 0,
     route jsonb,
     total_time int,
