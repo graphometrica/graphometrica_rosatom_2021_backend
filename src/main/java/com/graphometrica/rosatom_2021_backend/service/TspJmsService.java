@@ -25,6 +25,9 @@ public class TspJmsService implements TspJmsServiceInterface {
         String queue = activeMqProperties.getRosatom().getTspInputQueue();
 
         try{
+            if (input.getSolverType()== null || input.getSolverType().isBlank() || input.getSolverType().isEmpty()) {
+                input.setSolverType("remote:simcim");
+            }
             String message = mapper.writeValueAsString(input);
             log.info("Attempting Send message to Queue: "+ queue);
             log.info("message : " + message);
