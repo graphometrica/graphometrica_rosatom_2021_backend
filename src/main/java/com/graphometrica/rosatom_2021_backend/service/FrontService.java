@@ -44,7 +44,9 @@ public class FrontService {
 
     public Route createRoute(Route route) {
         route.setStatus(1);
-        return routeRepository.save(route);
+        var result =  routeRepository.save(route);
+        sendToCalculate(result.getRouteId());
+        return result;
     }
 
     public void sendToCalculate(int routeId) {
