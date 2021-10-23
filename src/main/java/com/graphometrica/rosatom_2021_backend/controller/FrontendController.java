@@ -33,8 +33,8 @@ public class FrontendController {
     }
 
     @GetMapping("/getRoutes")
-    public List<Route> getRoutes() {
-        return List.of();
+    public Iterable<Route> getRoutes() {
+        return frontService.getAllRoutes();
     }
 
     @PostMapping("/createRoute")
