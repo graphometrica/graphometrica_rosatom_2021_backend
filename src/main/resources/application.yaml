@@ -22,9 +22,9 @@ active-mq:
 spring:
   profiles: dev
   datasource:
-    url: jdbc:postgresql://52.149.226.198:5432/rosatomdb?currentSchema=rosatom
-    username: ${POSTGRES_USER:graphometrica}
-    password: ${POSTGRES_PASSWORD:NNoDhZRR}
+    url: ${POSTGRES_URL:jdbc:postgresql://localhost:5432/rosatomdb?currentSchema=rosatom}
+    username: ${POSTGRES_USER:rosatom}
+    password: ${POSTGRES_PASSWORD:rosatom}
 active-mq:
   rosatom:
     tsp-input-queue: rosatom.tsp.input.test
@@ -33,7 +33,7 @@ active-mq:
 spring:
   profiles: prod
   datasource:
-    url: jdbc:postgresql://52.149.226.198:5432/rosatomdb?currentSchema=rosatom
+    url: ${POSTGRES_URL:jdbc:postgresql://postgres-airo-db.postgres.database.azure.com:5432/rosatomdb?currentSchema=rosatom}
     username: ${POSTGRES_USER:username}
     password: ${POSTGRES_PASSWORD:password}
 active-mq:
