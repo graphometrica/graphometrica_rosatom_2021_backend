@@ -33,7 +33,7 @@ active-mq:
 spring:
   profiles: prod
   datasource:
-    url: jdbc:postgresql://localhost:5432/rosatomdb?currentSchema=rosatom
+    url: jdbc:postgresql://52.149.226.198:5432/rosatomdb?currentSchema=rosatom
     username: ${POSTGRES_USER:username}
     password: ${POSTGRES_PASSWORD:password}
 active-mq:
