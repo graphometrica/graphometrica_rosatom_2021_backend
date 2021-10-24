@@ -4,6 +4,9 @@ server:
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
+    hikari:
+      minimum-idle: 10
+      maximum-pool-size: 50
   flyway:
     schemas: rosatom
     create-schemas: true
@@ -20,9 +23,9 @@ active-mq:
 spring:
   profiles: dev
   datasource:
-    url: jdbc:postgresql://localhost:5432/rosatomdb?currentSchema=rosatom
-    username: ${POSTGRES_USER:rosatom}
-    password: ${POSTGRES_PASSWORD:rosatom}
+    url: jdbc:postgresql://52.149.226.198:5432/rosatomdb?currentSchema=rosatom
+    username: ${POSTGRES_USER:graphometrica}
+    password: ${POSTGRES_PASSWORD:NNoDhZRR}
 active-mq:
   rosatom:
     tsp-input-queue: rosatom.tsp.input.test
